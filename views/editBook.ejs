@@ -1,0 +1,70 @@
+<main class="flex-fill">
+  <div class="container py-4 py-md-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-7 col-md-9 col-sm-12">
+        <div class="card shadow-lg rounded-4 bg-secondary bg-gradient text-light">
+          <div class="card-body p-4 p-md-5">
+            <h2 class="card-title text-center mb-4 text-warning fw-bold">Edit Book</h2>
+
+            <form action="/books/edit/<%= book._id %>" method="POST" enctype="multipart/form-data">
+
+              <div class="row g-3">
+                <!-- Title -->
+                <div class="col-12 col-md-6">
+                  <label for="title" class="form-label fw-semibold">Title</label>
+                  <input type="text" class="form-control form-control-lg bg-dark text-light rounded-pill border-0" 
+                         id="title" name="title" value="<%= book.title %>" required>
+                </div>
+
+                <!-- Author -->
+                <div class="col-12 col-md-6">
+                  <label for="author" class="form-label fw-semibold">Author</label>
+                  <input type="text" class="form-control form-control-lg bg-dark text-light rounded-pill border-0" 
+                         id="author" name="author" value="<%= book.author %>">
+                </div>
+
+                <!-- Description -->
+                <div class="col-12">
+                  <label for="description" class="form-label fw-semibold">Description</label>
+                  <textarea class="form-control form-control-lg bg-dark text-light rounded border-0" 
+                            id="description" name="description" rows="4"><%= book.description %></textarea>
+                </div>
+
+                <!-- Price -->
+                <div class="col-12 col-md-6">
+                  <label for="price" class="form-label fw-semibold">Price ($)</label>
+                  <input type="number" class="form-control form-control-lg bg-dark text-light rounded-pill border-0" 
+                         id="price" name="price" step="0.01" value="<%= book.price %>">
+                </div>
+
+                <!-- Current Cover -->
+                <div class="col-12 col-md-6 text-center text-md-start">
+                  <label class="form-label fw-semibold">Current Cover Image</label><br>
+                  <% if(book.coverImage) { %>
+                    <img src="/uploads/<%= book.coverImage %>" alt="Cover Image" class="img-fluid rounded shadow-sm mb-2" style="max-width: 200px;">
+                  <% } else { %>
+                    <p class="text-muted fst-italic">No image uploaded.</p>
+                  <% } %>
+                </div>
+
+                <!-- Upload New Cover -->
+                <div class="col-12">
+                  <label for="coverImage" class="form-label fw-semibold">Change Cover Image</label>
+                  <input class="form-control form-control-lg bg-dark text-light rounded-pill border-0" 
+                         type="file" id="coverImage" name="coverImage" accept="image/*">
+                </div>
+
+                <!-- Buttons -->
+                <div class="col-12 d-flex flex-column flex-md-row justify-content-between gap-2 mt-3">
+                  <button type="submit" class="btn btn-warning btn-lg rounded-pill px-4 shadow-sm w-100 w-md-auto">Update Book</button>
+                  <a href="/books" class="btn btn-outline-light btn-lg rounded-pill px-4 shadow-sm w-100 w-md-auto">Cancel</a>
+                </div>
+
+              </div> <!-- end row -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
