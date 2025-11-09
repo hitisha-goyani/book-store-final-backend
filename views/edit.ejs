@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Book | Book Store Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* 🌤️ Soft Premium Background */
+    body {
+      background: linear-gradient(135deg, #fff9f2 0%, #fefcf8 100%);
+      font-family: "Poppins", sans-serif;
+      color: #2b2b2b;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* 🌟 Header (Unified Design) */
+    header {
+      background: linear-gradient(135deg, #fff3cd 0%, #ffe5b4 50%, #ffd66b 100%);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 215, 130, 0.5);
+      box-shadow: 0 4px 20px rgba(255, 196, 77, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-radius: 0 0 20px 20px;
+    }
+
+    /* 📚 Logo Circle */
+    .logo-circle {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffe17b, #ffb347);
+      box-shadow: 0 3px 8px rgba(255, 179, 71, 0.4);
+      font-size: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ✨ Gradient Text */
+    .text-gradient {
+      background: linear-gradient(90deg, #e09f3e, #ffb347);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    /* 🧭 Navigation Buttons */
+    .nav-btn {
+      display: inline-block;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 600;
+      color: #2b2b2b;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(6px);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .nav-btn:hover {
+      background: #fff;
+      border: 1px solid #ffcd75;
+      box-shadow: 0 2px 10px rgba(255, 195, 80, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* 🌟 Highlight Button */
+    .nav-btn-highlight {
+      background: linear-gradient(90deg, #ffcd75, #ffb347);
+      color: #2b2b2b;
+      box-shadow: 0 3px 8px rgba(255, 187, 80, 0.4);
+    }
+
+    .nav-btn-highlight:hover {
+      background: linear-gradient(90deg, #ffe093, #ffc857);
+      transform: translateY(-2px);
+    }
+
+    /* 📘 Edit Card */
+    .edit-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      padding: 2.5rem;
+      max-width: 700px;
+      margin: 3rem auto;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .edit-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    /* ✨ Labels */
+    .form-label {
+      font-weight: 600;
+      color: #e09f3e;
+    }
+
+    /* 🧾 Inputs */
+    .form-control {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid #ffe5b4;
+      color: #2b2b2b;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      background: #fff;
+      border-color: #ffc857;
+      box-shadow: 0 0 0 0.25rem rgba(255, 200, 80, 0.25);
+    }
+
+    /* 🖼️ Image Preview */
+    img.preview {
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+      margin-top: 10px;
+      width: 100px;
+    }
+
+    /* 💛 Buttons */
+    .btn-primary {
+      background: linear-gradient(90deg, #ffcd75, #ffb347);
+      border: none;
+      color: #2b2b2b;
+      font-weight: 600;
+      border-radius: 30px;
+      padding: 10px 30px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(255, 187, 80, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #ffe093, #ffc857);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(255, 187, 80, 0.5);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid #ffc857;
+      color: #e09f3e;
+      font-weight: 600;
+      border-radius: 30px;
+      padding: 10px 30px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #ffc857;
+      color: #212529;
+      transform: translateY(-2px);
+    }
+
+    /* 🏷️ Title */
+    .header-title {
+      text-align: center;
+      color: #e09f3e;
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 1px 2px rgba(255, 180, 40, 0.2);
+    }
+
+    footer {
+      background: #fffaf2;
+      border-top: 1px solid #ffe5b4;
+      color: #6c757d;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .edit-card {
+        padding: 1.5rem;
+        margin: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🌟 Header (Matching Add & List Pages) -->
+  <header class="py-3">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <div class="logo-circle">📚</div>
+        <h1 class="h4 mb-0 text-gradient">Book Store Management</h1>
+      </div>
+      <nav class="mt-3 mt-md-0">
+        <a href="/book" class="nav-btn"> Book List</a>
+        <a href="/book/add" class="nav-btn nav-btn-highlight"> Add Book</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 💫 Edit Card -->
+  <div class="container">
+    <div class="edit-card">
+      <h2 class="header-title mb-4"> Edit Book Details</h2>
+
+      <form action="/book/edit/<%= book._id %>" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Book Title</label>
+          <input type="text" name="title" class="form-control" value="<%= book.title %>" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Author Name</label>
+          <input type="text" name="author" class="form-control" value="<%= book.author %>" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea name="description" rows="4" class="form-control"><%= book.description %></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Price (USD)</label>
+          <input type="number" name="price" class="form-control" value="<%= book.price %>" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Cover Image</label>
+          <input type="file" name="coverImage" class="form-control" onchange="previewImage(event)">
+          <% if (book.coverImage) { %>
+            <img id="preview" src="/uploads/<%= book.coverImage %>" class="preview mt-2">
+          <% } else { %>
+            <img id="preview" src="#" class="preview mt-2" style="display:none;">
+          <% } %>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+          <a href="/book" class="btn btn-secondary">← Back</a>
+          <button type="submit" class="btn btn-primary">Update Book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 🦶 Footer -->
+  <footer>
+    <small>&copy; <%= new Date().getFullYear() %> Book Store Management System • Crafted with 💛</small>
+  </footer>
+
+  
+</body>
+<script>
+    // 🌟 Preview uploaded image instantly
+    function previewImage(event) {
+      const preview = document.getElementById('preview');
+      const file = event.target.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+      }
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</html>

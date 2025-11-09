@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📚 Book Store Management | Book List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    /* 🌤️ Soft Premium Background */
+    body {
+      background: linear-gradient(135deg, #fff9f2 0%, #fefcf8 100%);
+      font-family: "Poppins", sans-serif;
+      color: #2b2b2b;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* 🪄 Elegant Header with Glass & Gradient */
+    header {
+      background: linear-gradient(135deg, #fff3cd 0%, #ffe5b4 50%, #ffd66b 100%);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 215, 130, 0.5);
+      box-shadow: 0 4px 20px rgba(255, 196, 77, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-radius: 0 0 20px 20px;
+    }
+
+    /* 📚 Logo Circle */
+    .logo-circle {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffe17b, #ffb347);
+      box-shadow: 0 3px 8px rgba(255, 179, 71, 0.4);
+      font-size: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ✨ Gradient Text */
+    .text-gradient {
+      background: linear-gradient(90deg, #e09f3e, #ffb347);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    /* 🧭 Navigation Buttons */
+    .nav-btn {
+      display: inline-block;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 600;
+      color: #2b2b2b;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(6px);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .nav-btn:hover {
+      background: #fff;
+      border: 1px solid #ffcd75;
+      box-shadow: 0 2px 10px rgba(255, 195, 80, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* 🌟 Highlight Button */
+    .nav-btn-highlight {
+      background: linear-gradient(90deg, #ffcd75, #ffb347);
+      color: #2b2b2b;
+      box-shadow: 0 3px 8px rgba(255, 187, 80, 0.4);
+    }
+
+    .nav-btn-highlight:hover {
+      background: linear-gradient(90deg, #ffe093, #ffc857);
+      transform: translateY(-2px);
+    }
+
+    /* 🌸 Page Title */
+    .page-title {
+      color: #e09f3e;
+      font-weight: 700;
+      font-size: 2.2rem;
+      text-align: center;
+      margin-bottom: 35px;
+      text-shadow: 0 1px 2px rgba(255, 182, 45, 0.2);
+    }
+
+    /* ✨ Add Button */
+    .btn-add {
+      background: linear-gradient(90deg, #ffcd75, #ffb347);
+      border: none;
+      font-weight: 600;
+      color: #2b2b2b;
+      border-radius: 30px;
+      padding: 10px 25px;
+      transition: 0.3s;
+      box-shadow: 0 4px 10px rgba(255, 187, 80, 0.3);
+    }
+
+    .btn-add:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(90deg, #ffe093, #ffc857);
+      box-shadow: 0 6px 12px rgba(255, 187, 80, 0.5);
+    }
+
+    /* 📚 Card Design for Mobile */
+    .card {
+      border: none;
+      border-radius: 20px;
+      background: #ffffffb0;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    }
+
+    .card img {
+      border-radius: 10px;
+      max-height: 100px;
+      object-fit: cover;
+    }
+
+    /* 🧾 Table Design (Desktop) */
+    .table {
+      background-color: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .table thead {
+      background: linear-gradient(90deg, #ffcf70, #ffb347);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .table tbody tr:hover {
+      background-color: #fff8e1;
+      transition: 0.2s;
+    }
+
+    .btn-edit {
+      background-color: #50b5ff;
+      border: none;
+      color: #fff;
+      border-radius: 25px;
+      padding: 5px 15px;
+      transition: 0.2s;
+    }
+
+    .btn-edit:hover {
+      background-color: #369bdf;
+    }
+
+    .btn-delete {
+      background-color: #ff6b6b;
+      border: none;
+      color: #fff;
+      border-radius: 25px;
+      padding: 5px 15px;
+      transition: 0.2s;
+    }
+
+    .btn-delete:hover {
+      background-color: #e63946;
+    }
+
+    footer {
+      background: #fffaf2;
+      border-top: 1px solid #ffe5b4;
+      color: #6c757d;
+      padding: 20px 0;
+      margin-top: auto;
+    }
+
+    /* 📱 Responsive Tweaks */
+    @media (max-width: 768px) {
+      .page-title {
+        font-size: 1.8rem;
+      }
+      .card img {
+        max-height: 80px;
+      }
+    }
+  </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+
+  <header class="py-3">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <div class="logo-circle">📚</div>
+        <h1 class="h4 mb-0 text-gradient">Book Store Management</h1>
+      </div>
+      <nav class="mt-3 mt-md-0">
+        <a href="/book" class="nav-btn me-2">Book List</a>
+        <a href="/book/add" class="nav-btn nav-btn-highlight"> Add Book</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-fill">
+    <div class="container py-5">
+      <h1 class="page-title">Our Book Collection</h1>
+
+      <div class="d-flex justify-content-end mb-4">
+        <a href="/book/add" class="btn btn-add shadow-sm"> Add New Book</a>
+      </div>
+
+      <!-- Mobile Card Layout -->
+      <div class="d-md-none">
+        <% books.forEach(book => { %>
+          <div class="card mb-3 p-3">
+            <div class="row g-3 align-items-center">
+              <div class="col-4 text-center">
+                <% if(book.coverImage) { %>
+                  <img src="/uploads/<%= book.coverImage %>" class="img-fluid shadow-sm" alt="Cover">
+                <% } else { %>
+                  <span class="text-muted small fst-italic">No Image</span>
+                <% } %>
+              </div>
+              <div class="col-8">
+                <h5 class="fw-bold"><%= book.title %></h5>
+                <p class="small text-secondary mb-1"><strong>Author:</strong> <%= book.author || '-' %></p>
+                <p class="small text-muted text-truncate mb-1"><%= book.description || '-' %></p>
+                <p class="fw-semibold text-primary mb-2">$<%= book.price ? book.price.toFixed(2) : '-' %></p>
+                <div class="d-flex gap-2">
+                  <a href="/book/edit/<%= book._id %>" class="btn btn-edit btn-sm">Edit</a>
+                  <form action="/book/delete/<%= book._id %>" method="POST" class="m-0">
+                    <button type="submit" class="btn btn-delete btn-sm">Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <!-- Desktop Table Layout -->
+      <div class="table-responsive d-none d-md-block mt-4">
+        <table class="table table-hover align-middle text-center">
+          <thead>
+            <tr>
+              <th>Cover</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% books.forEach(book => { %>
+              <tr>
+                <td>
+                  <% if(book.coverImage) { %>
+                    <img src="/uploads/<%= book.coverImage %>" width="70" class="rounded shadow-sm" alt="Cover">
+                  <% } else { %>
+                    <span class="text-muted fst-italic">No Image</span>
+                  <% } %>
+                </td>
+                <td class="fw-semibold"><%= book.title %></td>
+                <td><%= book.author || '-' %></td>
+                <td class="text-muted text-truncate" style="max-width: 300px;"><%= book.description || '-' %></td>
+                <td class="fw-bold text-success">$<%= book.price ? book.price.toFixed(2) : '-' %></td>
+                <td>
+                  <div class="d-flex justify-content-center gap-2">
+                    <a href="/book/edit/<%= book._id %>" class="btn btn-edit btn-sm">Edit</a>
+                    <form action="/book/delete/<%= book._id %>" method="POST" class="m-0">
+                      <button type="submit" class="btn btn-delete btn-sm">Delete</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    <small>&copy; <%= new Date().getFullYear() %> Book Store Management System • Crafted with 💛</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

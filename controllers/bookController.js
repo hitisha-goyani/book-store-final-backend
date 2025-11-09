@@ -1,124 +1,88 @@
-import Book from '../modals/bookModel.js';
-import path from "path";
-import fs from "fs";
-import httpError from '../middlewares/errorHandler.js';
+import HttpError from "../middlewares/errorHandler.js";
+import Book from "../modals/bookModel.js";
 
 
 
-const getAllBooks = async (req, res) => {
+
+  const getAllBooks = async (req, res, next) => {
   try {
-    const books = await Book.find().sort({ createdAt: -1 });
+    const books = await Book.find();
 
-    res.render("books", { books });
+    if (!books) {
+      return next(new HttpError("Book not found", 404));
+    }
 
-  } catch(error){
-        next(new httpError(error.message,500))
+    res.render("book", { books, editBook: null });
+
+  } catch (error) {
+    next(new HttpError(error.message, 500));
   }
 };
 
-const getAddBook = (req, res) => {
 
 
-  res.render("addBook");
+// Add a new book
+const addBook = async (req, res, next) => {
+  try {
+    const {title,author,description,price, } = req.body;
+    const coverImage = req.file ? req.file.filename : null;
+
+    const newBook = new Book({
+      title,
+      author,
+      description,
+       price,
+      coverImage,
+    });
+
+    await newBook.save();
+    res.redirect("/book");
+  } catch (error) {
+    next(new HttpError(error.message, 500));
+  }
 };
 
-const addBook = async (req, res) => {
+// Get book by id (for editing)
+const getBookById = async (req, res, next) => {
   try {
-    const { title, author, description, price } = req.body;
+    const book = await Book.findById(req.params.id);
 
-    let coverImage = "";
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    res.render("edit", { book });
+  } catch (error) {
+    next(new HttpError(error.message, 500));
+  }
+};
+
+// Update book
+const updateBook = async (req, res, next) => {
+  try {
+    const { title,author,description,price, } = req.body;
+    const updateData = {title,author,description,price, };
 
     if (req.file) {
-      coverImage = req.file.filename;
+      updateData.coverImage = req.file.filename;
     }
 
-    const book = new Book({ title, author, description, price, coverImage });
-
-    await book.save();
-
-    res.redirect("/books");
-
-  } catch(error){
-        next(new httpError(error.message,500))
+    await Book.findByIdAndUpdate(req.params.id, updateData);
+    res.redirect("/book");
+  } catch (error) {
+    next(new HttpError(error.message, 500));
   }
 };
 
-const getEditBook = async (req, res) => {
+// Delete book
+const deleteBook = async (req, res, next) => {
   try {
-    const book = await Book.findById(req.params.id);
+    await Book.findByIdAndDelete(req.params.id);
 
-    if (!book) return res.status(404).json({message:"Book not found.."})
-
-    res.render("editBook", { book });
-
-  } catch(error){
-        next(new httpError(error.message,500))
-  }
-  }
-
-const updateBook = async (req, res) => {
-  try {
-    const { title, author, description, price } = req.body;
-
-    const book = await Book.findById(req.params.id);
-
-    if (!book) res.status(404).json({message:"Book not found.."})
-
-
-    if (req.file) {
-      if (book.coverImage) {
-        const oldImagePath = path.join("public", "uploads", book.coverImage);
-
-        if (fs.existsSync(oldImagePath)) {
-
-          fs.unlinkSync(oldImagePath);
-        }
-      }
-      book.coverImage = req.file.filename;
-    }
-
-    book.title = title;
-    book.author = author;
-    book.description = description;
-    book.price = price;
-
-    await book.save();
-    res.redirect("/books");
-  } catch(error){
-        next(new httpError(error.message,500))
-  }
-  };
-
-
-const deleteBook = async (req, res) => {
-  try {
-    const book = await Book.findById(req.params.id);
-    if (!book) 
-      return res.status(404).json({message:"Book not found.."})
-
-    if (book.coverImage) {
-
-      const imagePath = path.join("public", "uploads", book.coverImage);
-
-      if (fs.existsSync(imagePath)) {
-
-        fs.unlinkSync(imagePath);
-      }
-    }
-
-    await Book.deleteOne({ _id: req.params.id });
-    
-    res.redirect("/books");
-  } catch(error){
-        next(new httpError(error.message,500))
+    res.redirect("/book");
+  } catch (error) {
+    next(new HttpError(error.message, 500));
   }
 };
 
-export default {
-  getAllBooks,
-  getAddBook,
-  addBook,
-  getEditBook,
-  updateBook,
-  deleteBook,
-};
+export { getAllBooks, addBook, getBookById, updateBook, deleteBook };
